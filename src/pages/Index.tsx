@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Brain, FileSearch, Sparkles, Database } from 'lucide-react';
+import { Brain, FileSearch, Sparkles, Database, Plus, Crown } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DocumentUpload } from '@/components/DocumentUpload';
 import { UrlInput } from '@/components/UrlInput';
 import { DocumentCard } from '@/components/DocumentCard';
 import { ChatInterface } from '@/components/ChatInterface';
 import { Analytics } from '@/components/Analytics';
+import { SubscriptionDialog } from '@/components/SubscriptionDialog';
+import { Button } from '@/components/ui/button';
 import { useDocuments } from '@/hooks/useDocuments';
 
 const Index = () => {
   const { documents, isProcessing, processDocument, processUrl, removeDocument, getAllChunks } = useDocuments();
   const [activeTab, setActiveTab] = useState('upload');
+  const [showSubscription, setShowSubscription] = useState(false);
 
   const hasDocuments = documents.length > 0;
   const hasReadyDocuments = documents.some(doc => doc.status === 'ready');
@@ -58,6 +61,19 @@ const Index = () => {
                     />
                   ))}
                 </div>
+              )}
+
+              {/* Add More Documents Button */}
+              {documents.length > 0 && (
+                <Button
+                  onClick={() => setShowSubscription(true)}
+                  variant="outline"
+                  className="w-full mt-3 border-dashed border-2 border-purple-500/30 hover:border-purple-500/50 hover:bg-purple-500/5 text-purple-600 hover:text-purple-700"
+                >
+                  
+                  Add More Documents
+                  
+                </Button>
               )}
             </div>
 
@@ -156,6 +172,12 @@ const Index = () => {
           </main>
         </div>
       </div>
+
+      {/* Subscription Dialog */}
+      <SubscriptionDialog 
+        open={showSubscription} 
+        onOpenChange={setShowSubscription} 
+      />
 
       {/** Footer removed as requested **/}
     </div>
