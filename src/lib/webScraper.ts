@@ -3,7 +3,7 @@
  * Fetches and extracts clean text from any URL
  */
 
-const JINA_API_KEY = 'jina_269a4f11562847d6a6f33e9189a5e53bbQ2-ueUwmpwOq8pOy_Y_4_Pm1Izh';
+const JINA_API_KEY = import.meta.env.VITE_JINA_API_KEY || '';
 
 export interface ScrapedContent {
   url: string;
