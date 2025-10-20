@@ -1,9 +1,9 @@
 /**
- * Web Scraper using Jina AI Reader API
+ * Web Scraper using FireCrawl API
  * Fetches and extracts clean text from any URL
  */
 
-const JINA_API_KEY = import.meta.env.VITE_JINA_API_KEY || '';
+const FIRECRAWL_API_KEY = import.meta.env.VITE_FIRECRAWL_API_KEY || '';
 
 export interface ScrapedContent {
   url: string;
@@ -13,7 +13,7 @@ export interface ScrapedContent {
 }
 
 /**
- * Fetch and extract text content from a URL using Jina AI Reader
+ * Fetch and extract text content from a URL using FireCrawl API
  * @param url - The URL to scrape
  * @returns Scraped content with title and text
  */
@@ -22,15 +22,17 @@ export async function scrapeWebPage(url: string): Promise<ScrapedContent> {
     // Validate URL
     const urlObj = new URL(url);
     
-    // Use Jina AI Reader API with authentication
-    const jinaUrl = `https://r.jina.ai/${url}`;
-    
-    const response = await fetch(jinaUrl, {
+    // Use FireCrawl API with authentication
+    const response = await fetch('https://api.firecrawl.dev/v0/scrape', {
+      method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${JINA_API_KEY}`,
-        'X-Return-Format': 'json',
+        'Authorization': `Bearer ${FIRECRAWL_API_KEY}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        url: url,
+        formats: ['markdown', 'html'],
+      }),
     });
 
     if (!response.ok) {
@@ -39,10 +41,13 @@ export async function scrapeWebPage(url: string): Promise<ScrapedContent> {
 
     const data = await response.json();
     
+    // FireCrawl returns data in 'data' object
+    const scrapedData = data.data || data;
+    
     return {
       url: url,
-      title: data.title || data.data?.title || extractDomainName(url),
-      content: data.content || data.data?.content || data.text || '',
+      title: scrapedData.metadata?.title || scrapedData.title || extractDomainName(url),
+      content: scrapedData.markdown || scrapedData.content || scrapedData.text || '',
     };
   } catch (error) {
     console.error('Web scraping error:', error);
