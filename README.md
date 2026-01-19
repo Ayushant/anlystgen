@@ -224,26 +224,12 @@ Build for production:
 npm run build
 ```
 
-Deploy to Lovable:
-1. Click "Share" → "Publish" in Lovable editor
-2. Your app will be live at `yourapp.lovable.app`
 
-## 📄 License
 
-This project is built with Lovable and uses the Gemini API.
 
-## 🤝 Contributing
-
-This is a Lovable-generated project. To modify:
-1. Use the Lovable editor for visual changes
-2. Or clone and edit locally, then push changes
-
-## 📞 Support
-
-- [Lovable Documentation](https://docs.lovable.dev)
+#
 - [Gemini API Docs](https://ai.google.dev/docs)
 - [GitHub Issues](YOUR_REPO_URL/issues)
 
 ---
 
-Built with ❤️ using Lovable and Google Gemini
